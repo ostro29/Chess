@@ -358,7 +358,7 @@ std::vector<boardt> bishop_move(boardt board , int x , int y)
         }
         if (lu && iv(x - i, y - i))
         {
-            if (board[x - i][y - i][0] != board[x][y][0])
+            if (board[x - i][y - i][0] == board[x][y][0])
                 lu = false;
             else
             {
@@ -456,10 +456,10 @@ bool check_check(boardt board , int x , int y)
     pawn = color + pawn;
     // Check Pawn
     if (pawn == "bpawn")
-        if (board[x - 1][y + 1] == pawn || board[x - 1][y - 1] == pawn)
+        if ((iv(x - 1 , y + 1) && board[x - 1][y + 1] == pawn) || (iv(x - 1, y - 1) && board[x - 1][y - 1] == pawn))
             return true;
     if (pawn == "wpawn")
-        if (board[x + 1][y + 1] == pawn || board[x + 1][y - 1] == pawn)
+        if ((iv(x + 1, y + 1) && board[x + 1][y + 1] == pawn) || (iv(x + 1, y - 1) && board[x + 1][y - 1] == pawn))
             return true;
 
     //check horse
@@ -569,9 +569,6 @@ bool check_mate(boardt board , int x , int y)
         }
     }
 
-    //for (auto it = res1.begin(); it != res1.end(); ++it)
-    //    board_dump(*it);
-
     for (auto it = res1.begin() ; it != res1.end(); it++)
     {
         std::pair<int , int> pos = find_king(*it, board[x][y]);
@@ -605,6 +602,7 @@ std::vector<boardt> possible_move(boardt board, int x, int y)
         res = king_move(board , x , y);
 
     auto it = res.begin();
+
     while (it != res.end())
     {
         std::string king = board[x][y][0] == 'w' ? "wking" : "bking";

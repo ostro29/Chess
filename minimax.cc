@@ -112,10 +112,9 @@ std::pair<int , boardt> minimax2(boardt board, bool player , int depth , int alp
 {
     std::pair<int , int> bking = find_king(board , "bking");
     std::pair<int , int> wking = find_king(board , "wking");
-    if (depth == 0 || check_mate(board , bking.first , bking.second) ||check_mate(board , wking.first , wking.second))
+    if (depth == 0 || check_mate(board , bking.first , bking.second) || check_mate(board , wking.first , wking.second))
     {   
-        boardt res;
-        return std::make_pair(total_score(board), res);
+        return std::make_pair(total_score(board), board);
     }
     std::vector<boardt> res1;
     char p = player ? 'w' : 'b';
@@ -138,7 +137,6 @@ std::pair<int , boardt> minimax2(boardt board, bool player , int depth , int alp
 
     for (auto it = res1.begin(); it != res1.end(); it++)
     {
-        //char nextplayer = player ? 'b' : 'w';
         int value = minimax2(*it, !player, depth - 1, alpha , beta).first;
 
 
@@ -267,10 +265,23 @@ int main()
     // board[1][3] = "";
     // board[5][5] = "btower";
     // board[0][0] = "";
+    // board[6][2] = "bking";
+    // board[0][4] = "";
 
-    // board_dump(board);
+    // board[4][0] = "wpawn";
+    // board[6][0] = "";
+    // board[4][2] = "wpawn";
+    // board[6][2] = "";
+    // board[5][4] = "wpawn";
+    // board[6][4] = "";
+    // board[0][0] = "";
+    // board[0][1] = "btower";
+    // board[2][2] = "bhorse";
 
-    // std::vector<boardt> rboard = possible_move(board , 5 , 5);
+
+    board_dump(board);
+
+    // std::vector<boardt> rboard = possible_move(board , 7 , 5);
     // for (auto it = rboard.begin(); it != rboard.end(); it++)
     //    board_dump(*it);
     // return total_score(board);
@@ -278,11 +289,18 @@ int main()
     {
         //char player = i%2 == 0 ? 'w' : 'b';
         bool player = i%2 == 0? true : false;
-        std::pair<int , boardt> res = minimax2(board , player, 4, -1000000, 1000000);
+        std::pair<int , boardt> res = minimax2(board , player, 2, -1000000, 1000000);
         //std::pair<int , boardt> res = minimax3(3 , board , player);
         board = res.second;
         board_dump(board);
         std::cout << "ACTUAL Value " << total_score(board) << '\n';
         std::cout << "Predicted VALUE : " << res.first << "\n\n";
     }
+
+    // auto res = king_move(board , 6 , 2);
+    // for (auto it = res.begin(); it != res.end(); it++)
+    // {
+    //     board_dump(*it);
+    //     std::cout << "KING : x = " << find_king(*it , "bking").first  << " y = " << find_king(*it , "bking").second << '\n';
+    // }
 }
